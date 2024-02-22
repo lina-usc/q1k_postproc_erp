@@ -22,5 +22,5 @@ pip install ipykernel
 
 # Create the kernel to use for the notebook.
 ```bash
-python -m ipykernel install --user --name=q1k_postproc
+python -m ipykernel install --user --name=q1k_postproc_erp
 ```
