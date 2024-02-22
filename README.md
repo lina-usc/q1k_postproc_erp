@@ -1,8 +1,8 @@
 
 # Clone repo and navigate to the directory
 ```bash
-git clone git@github.com:jadesjardins/acar-q1k-pilot-seg.git
-cd acar-q1k-pilot-seg
+git clone git@github.com:lina-usc/q1k_postproc_erp.git
+cd q1k_postproc_erp
 ```
 
 # Create and source the Python virtual environment
