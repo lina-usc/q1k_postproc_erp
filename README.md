@@ -1,26 +1,31 @@
-
-# Clone repo and navigate to the directory
+## Create the virtual environment
 ```bash
-git clone git@github.com:lina-usc/q1k_postproc_erp.git
-cd q1k_postproc_erp
-```
-
-# Create and source the Python virtual environment
-```bash
-python3 -m venv env
+python3.10 -m venv env
 source env/bin/activate
 ```
 
-# Install the required packages
+## Clone packages into the env and install them
 ```bash
-pip install pylossless
-pip install pyqt5==5.12.0
-pip install mne-qt-browser
-pip install plotly
-pip install ipykernel
+cd env
+
+git clone https://github.com/mne-tools/mne-icalabel.git
+cd mne-icalabel
+git checkout maint/0.4
+pip install .
+cd ..
+
+git clone git@github.com:lina-usc/pylossless.git
+cd pylossless
+pip install .
+cd ../..
 ```
 
-# Create the kernel to use for the notebook.
+##Install remaining packages and create the ipykernel
 ```bash
+pip install openneuro-py
+pip install EDFLib-Python
+
+pip install ipykernel
 python -m ipykernel install --user --name=q1k_postproc_erp
 ```
+
