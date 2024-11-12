@@ -1,5 +1,2 @@
-__pycache__/
-env/
-mne-icalabel/
-session_reports/
+.ipynb_checkpoints/
 
