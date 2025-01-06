@@ -6,13 +6,9 @@ import mne_bids
 
 def apply_ll(bids_path, ll_state, eeg_ll_raw):
 
-    ##load the lossless state...
-    #ll_state = ll.LosslessPipeline()
-    #ll_state = ll_state.load_ll_derivative(bids_path)
     bids_path_str=str(bids_path)
 
     # Merge marks down to bads (aka manual)
-    #ll_qcr = ll_state.raw.copy()
     manual = []
     for flag_type in ll_state.flags['ch']:
         manual.extend(ll_state.flags['ch'][flag_type])
@@ -33,10 +29,6 @@ def apply_ll(bids_path, ll_state, eeg_ll_raw):
     eeg_ll_raw = eeg_ll_raw.interpolate_bads()
     eeg_ll_raw = eeg_ll_raw.set_eeg_reference(ref_channels="average")
 
-    ##experiment with purging...
-    #rejection_policy = ll_state.RejectionPolicy()
-    #cleaned_raw = rejection_policy.apply(eeg_ll_raw)
-    
     return eeg_ll_raw
 
 
@@ -45,21 +37,11 @@ def eeg_et_combine(eeg_raw, et_raw, eeg_times, et_times, eeg_events, eeg_event_d
     eeg_raw.load_data()
     et_raw.load_data()
 
-    # Align the data
+    #align the data
     mne.preprocessing.realign_raw(eeg_raw, et_raw, eeg_times, et_times, verbose="error")
 
-    # Add EEG channels to the eye-tracking raw object
+    #add EEG channels to the eye-tracking raw object
     eeg_raw.add_channels([et_raw], force_update_info=True)
-
-    ## update the annotations...
-    #eeg_event_dict_r = {value: key for key, value in eeg_event_dict.items()}
-    #eeg_annots = mne.annotations_from_events(
-    #    events=eeg_events,
-    #    event_desc=eeg_event_dict_r,
-    #    sfreq=eeg_raw.info["sfreq"],
-    #    orig_time=eeg_raw.info["meas_date"],
-    #)
-    #eeg_raw.set_annotations(eeg_annots)
 
     # Reset orig_time for et_raw annotations
     eeg_annot = mne.Annotations(
@@ -75,25 +57,16 @@ def eeg_et_combine(eeg_raw, et_raw, eeg_times, et_times, eeg_events, eeg_event_d
         description=et_raw.annotations.description,
         orig_time=None  # Ignore orig_time
     )
-    #eeg_annot = eeg_raw.annotations
-    #et_annot = et_raw.annotations
+
     combined_annotations = eeg_annot + et_annot
     eeg_raw.set_annotations(combined_annotations)
 
-    #eeg_annot = eeg_raw.annotations
-    #et_annot = et_raw.annotations
-    #eeg_raw.set_annotations(eeg_annot + et_annot)
-    
     return eeg_raw, et_raw
 
 
 def write_eeg(eeg_raw, eeg_event_dict, eeg_events, subject_id_out, session_id, task_id_out, project_path, device_info):
     # write the BIDS output files
-    # specify power line frequency as required by BIDS
-    #eeg_raw.info["line_freq"] = 60
-    #eeg_raw.info['device_info']=device_info
-    #eeg_raw.info['device_info']['type'] = eeg_raw.info['device_info']['type'].replace(' ', '-')
-
+    
     #THIS SHOULD BE MOVED TO QIT.FILLNA if it is needed...
     def fillna(raw, fill_val=0):
         return mne.io.RawArray(np.nan_to_num(raw.get_data(), nan=fill_val), raw.info)
