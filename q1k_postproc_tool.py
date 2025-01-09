@@ -25,7 +25,7 @@ def apply_ll(bids_path, ll_state, eeg_ll_raw):
     # Load the data and apply the ICA
     eeg_ll_raw.load_data()
     ll_state.ica2.apply(eeg_ll_raw)
-    eeg_ll_raw = eeg_ll_raw.filter(l_freq=1.0, h_freq=50.0, picks='eeg')
+    #eeg_ll_raw = eeg_ll_raw.filter(l_freq=1.0, h_freq=50.0, picks='eeg')
     eeg_ll_raw = eeg_ll_raw.interpolate_bads()
     eeg_ll_raw = eeg_ll_raw.set_eeg_reference(ref_channels="average")
 
